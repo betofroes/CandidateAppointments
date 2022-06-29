@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:p="http://primefaces.org/ui"
+  xmlns:f="http://java.sun.com/jsf/core">
+
+<h:head>
+  <title>Candidate Appointments</title>
+</h:head>
+
+<h:body>
+  <h:form id="formInit">
+
+    <p:panel header="Informe seus dados">
+      <h:panelGrid columns="2" cellpadding="4">
+        <h:outputText value="Nome: " />
+        <p:inputText id="name" value="#{candidateAppointmentsController.dto.name}" />
+
+        <h:outputText value="Documento: " />
+        <p:inputText id="tax-name" value="#{candidateAppointmentsController.dto.taxNumber}" />
+
+        <p:commandButton id="submit" value="Submit"
+          process="formInit" update="view-panel"
+          action="#{candidateAppointmentsController.exec}"
+          oncomplete="PF('viewDialog').show()" />
+      </h:panelGrid>
+    </p:panel>
+
+    <p:dialog header="Compromissos" widgetVar="viewDialog"
+      modal="true" resizable="false"
+      width="80%">
+      <h:panelGrid id="view-panel" columns="1" cellpadding="4">
+      
+        Solicitante: <h:outputText value="#{candidateAppointmentsController.dto.name}" />
+        
+        <p:dataTable id="view-table" var="data" value="#{candidateAppointmentsController.schedulesCandidate}"
+        	emptyMessage="Não foi encontrado compromissos">
+        	<f:facet name="header">
+        		DADOS
+            </f:facet>
+
+            <p:column headerText="Exame">
+                <h:outputText value="#{data.exam.name}" />
+            </p:column>
+            <p:column headerText="Data Exame">
+                <h:outputText value="#{data.availability.data}" />
+            </p:column>
+            <p:column headerText="Sala Exame">
+                <h:outputText value="#{data.availability.room.description}" />
+            </p:column>
+        </p:dataTable>
+      </h:panelGrid>
+    </p:dialog>
+
+  </h:form>
+</h:body>
+</html>
